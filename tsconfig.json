@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "release",
+    "module": "es6",
+    "target": "es6",
+    "sourceMap": true,
+    "declaration": true,
+    "lib": ["es6", "dom"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
