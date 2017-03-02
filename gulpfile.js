@@ -41,9 +41,9 @@ gulp.task('bundle', ['es5'], done => rollup
     })
     .then(bundle => bundle.write({
         format: 'umd',
-        moduleName: 'jsonMapper',
+        moduleName: 'jsonStringMapper',
         sourceMap: true,
-        dest: 'release/bundles/json-mapper.umd.js'
+        dest: 'release/bundles/json-string-mapper.umd.js'
     })));
 
 gulp.task('package-json', function() {
@@ -56,7 +56,7 @@ gulp.task('package-json', function() {
                 delete data.scripts.publish;
             }
 
-            data.main = 'bundles/json-mapper.umd.js';
+            data.main = 'bundles/json-string-mapper.umd.js';
 
             return data;
         }))

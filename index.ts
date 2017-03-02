@@ -1,1 +1,1 @@
-export * from "./src/mapper/json-mapper";
+export * from "./src/mapper/json-string-mapper";

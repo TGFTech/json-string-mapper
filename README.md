@@ -1,7 +1,7 @@
-# json-mapper
+# json-string-mapper
 
 transform json string to key value pair map
 
 # usage
 
-npm install json-mapper
+npm install json-string-mapper

@@ -6,7 +6,7 @@ import {
 } from '../../angular/compiler/ast';
 import * as util from "../../util/lang";
 
-export class JsonMapperVisitor extends RecursiveAstVisitor {
+export class JsonStringMapperVisitor extends RecursiveAstVisitor {
 
     private _handleMethodArgs(args): any {
         if (!args) {

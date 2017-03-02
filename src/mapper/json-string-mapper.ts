@@ -1,14 +1,14 @@
 import {Parser, Lexer} from '../angular/compiler';
 import {LiteralMap, ASTWithSource} from '../angular/compiler';
-import {JsonMapperVisitor} from "../visitors/json-mapper-visitor/json-mapper-visitor";
+import {JsonStringMapperVisitor} from "../visitors/json-string-mapper-visitor/json-string-mapper-visitor";
 
-export class JsonMapper {
+export class JsonStringMapper {
     private _parser: Parser = new Parser(new Lexer());
     private _cache: Map<string, ASTWithSource> = new Map<string, ASTWithSource>();
 
     map(expression: string): Map<string, string> {
         let ast: ASTWithSource = null;
-        const visitor = new JsonMapperVisitor();
+        const visitor = new JsonStringMapperVisitor();
 
         if (this._cache.has(expression)) {
             ast = this._cache.get(expression);
