@@ -1,13 +1,17 @@
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const merge = require('merge2');
-const sourcemaps = require('gulp-sourcemaps');
 const babel = require('gulp-babel');
+const sourcemaps = require('gulp-sourcemaps');
 const jsonTransform = require('gulp-json-transform');
 const clean = require('gulp-clean');
+const rollup = require('rollup');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const rollupSourcemaps = require('rollup-plugin-sourcemaps');
 
 gulp.task('es5', () => {
-    const tsProject = ts.createProject('tsconfig.json', {module: 'es6'});
+    const tsProject = ts.createProject('tsconfig.es5.json', {module: 'es6'});
 
     const tsResult = gulp.src(["./**/*.ts", "!node_modules/**/*.*"]) // or tsProject.src()
         .pipe(sourcemaps.init())
@@ -17,11 +21,30 @@ gulp.task('es5', () => {
         tsResult.dts
             .pipe(gulp.dest('release')),
         tsResult.js
-            .pipe(babel())
+            //.pipe(babel())
             .pipe(sourcemaps.write("./"))
             .pipe(gulp.dest('release'))
     ]);
 });
+
+gulp.task('bundle', ['es5'], done => rollup
+    .rollup({
+        entry: 'release/index.js',
+        sourceMap: true,
+        plugins: [
+            nodeResolve({jsnext: true, main: true}),
+            commonjs({
+                include: 'node_modules/**',
+            }),
+            rollupSourcemaps()
+        ]
+    })
+    .then(bundle => bundle.write({
+        format: 'umd',
+        moduleName: 'jsonMapper',
+        sourceMap: true,
+        dest: 'release/bundles/json-mapper.umd.js'
+    })));
 
 gulp.task('package-json', function() {
     gulp.src('./package.json')
@@ -33,7 +56,7 @@ gulp.task('package-json', function() {
                 delete data.scripts.publish;
             }
 
-            data.main = 'index.js';
+            data.main = 'bundles/json-mapper.umd.js';
 
             return data;
         }))
@@ -50,4 +73,4 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('build', ['clean', 'es5', 'package-json', 'readme']);
+gulp.task('build', ['clean', 'bundle', 'package-json', 'readme']);
